@@ -4,6 +4,10 @@ const fs = require("fs");
 const tempOverview = fs.readFileSync(`${__dirname}/overview.html`, 'utf-8');
 const tempCard = fs.readFileSync(`${__dirname}/template-card.html`, 'utf-8');
 const tempProduct = fs.readFileSync(`${__dirname}/template-product.html`, 'utf-8');
+
+const data = fs.readFileSync(`${__dirname}/data.json`);
+const dataObj = JSON.parse(data);
+
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
