@@ -10,10 +10,15 @@ const data = fs.readFileSync(`${__dirname}/data.json`);
 const dataObj = JSON.parse(data);
 
 const replaceTemplate = (temp, product) => {
+  console.log(product);
   let output = temp.replace(/{%img%}/g, product.image);
-  output = output.replace(/{%qunatity%}/g, product.qunatity);
+  output = output.replace(/{%quantity%}/g, product.quantity);
   output = output.replace(/{%productName%}/g, product.productName);
   output = output.replace(/{%price%}/g, product.price);
+  output = output.replace(/{%id%}/g, product.id);
+  output = output.replace(/{%from%}/g, product.from);
+  output = output.replace(/{%nutrients%}/g, product.nutrients);
+  output = output.replace(/{%description%}/g, product.description);
   output = output.replace(/{%id%}/g, product.id);
   if (!product.organic) {
     output = output.replace(/{%not_organic%}/g, 'not-organic');
@@ -32,7 +37,9 @@ const server = http.createServer((req, res) => {
     const output = tempOverview.replace(/{%product_cards%}/, cardsHtml);
     res.end(output);
   } else if (pathname === "/product") {
-    res.end("This is the product");
+    res.writeHead(200, {'Content-type':'text/html'});
+    const output = replaceTemplate(tempProduct, (dataObj[query.id]));
+    res.end(output);
   } else {
     res.writeHead(404, {
         'Content-type':'text/html'
