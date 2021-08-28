@@ -22,16 +22,16 @@ const replaceTemplate = (temp, product) => {
 };
 
 const server = http.createServer((req, res) => {
-  const pathName = req.url;
+  const {query, pathname} = url.parse(req.url, true);
 
-  if (pathName === "/" || pathName === "/overview") {
+  if (pathname === "/" || pathname === "/overview") {
     res.writeHead(200, {'Content-type':'text/html'});
     const cardsHtml = dataObj
       .map(ele => replaceTemplate(tempCard, ele))
       .join('');
     const output = tempOverview.replace(/{%product_cards%}/, cardsHtml);
     res.end(output);
-  } else if (pathName === "/product") {
+  } else if (pathname === "/product") {
     res.end("This is the product");
   } else {
     res.writeHead(404, {
